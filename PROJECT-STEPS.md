@@ -425,3 +425,17 @@ Service Discovery
 Container Troubleshooting
 Multi-Service Architecture
 Production-Style Docker Deployment
+
+IMAGES IN DOCKER HUB:
+
+docker pull binayadevops/production-docker-app-frontend
+
+docker pull binayadevops/nginx:alpine
+
+docker pull binayadevops/postgres:15
+
+docker pull binayadevops/production-docker-app-backend
+
+
+
+
