@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Production Docker App</title>
+</head>
+<body>
+    <h1>Frontend Running</h1>
+
+    <button onclick="checkBackend()">Check Backend</button>
+
+    <p id="result"></p>
+
+    <script>
+        async function checkBackend() {
+            const response = await fetch('/api/');
+            const data = await response.text();
+
+            document.getElementById("result").innerText = data;
+        }
+    </script>
+</body>
+</html>

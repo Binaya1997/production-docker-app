@@ -1,0 +1,70 @@
+services:
+
+  frontend:
+    build: ./frontend
+    container_name: frontend
+
+    networks:
+      - frontend-network
+
+  backend:
+    build: ./backend
+    container_name: backend
+
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+    environment:
+      DB_HOST: ${DB_HOST}
+      DB_NAME: ${DB_NAME}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+
+    depends_on:
+      - postgres
+
+    networks:
+      - frontend-network
+      - backend-network
+
+  postgres:
+    image: postgres:15
+    container_name: postgres
+
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+    networks:
+      - backend-network
+
+  nginx:
+    image: nginx:alpine
+    container_name: nginx
+
+    ports:
+      - "80:80"
+
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+
+    depends_on:
+      - frontend
+      - backend
+
+    networks:
+      - frontend-network
+
+volumes:
+  postgres-data:
+
+networks:
+  frontend-network:
+  backend-network:
